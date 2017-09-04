@@ -180,23 +180,6 @@
     chmod -h 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 
     chown -h system.system /sys/class/timed_output/vibrator/enable
-    chown -h system.system /sys/class/leds/keyboard-backlight/brightness
-    chown -h system.system /sys/class/leds/lcd-backlight/brightness
-    chown -h system.system /sys/class/leds/button-backlight/brightness
-    chown -h system.system /sys/class/leds/jogball-backlight/brightness
-    chown -h system.system /sys/class/leds/red/brightness
-    chown -h system.system /sys/class/leds/green/brightness
-    chown -h system.system /sys/class/leds/blue/brightness
-    chown -h system.system /sys/class/leds/red/device/grpfreq
-    chown -h system.system /sys/class/leds/red/device/grppwm
-    chown -h system.system /sys/class/leds/red/device/blink
-    chown -h system.system /sys/class/leds/red/brightness
-    chown -h system.system /sys/class/leds/green/brightness
-    chown -h system.system /sys/class/leds/blue/brightness
-    chown -h system.system /sys/class/leds/red/device/grpfreq
-    chown -h system.system /sys/class/leds/red/device/grppwm
-    chown -h system.system /sys/class/leds/red/device/blink
-    chown -h system.system /sys/class/timed_output/vibrator/enable
     chown -h system.system /sys/module/sco/parameters/disable_esco
     chown -h system.system /sys/kernel/ipv4/tcp_wmem_min
     chown -h system.system /sys/kernel/ipv4/tcp_wmem_def
