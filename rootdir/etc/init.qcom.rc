@@ -358,15 +358,15 @@ on boot
     chown root mot_tcmd /sys/bus/i2c/drivers/synaptics_dsx_i2c/5-0020/reset
 
     # Change ownership and permission for led
-    chown system system /sys/class/leds/red/brightness
-    chown system system /sys/class/leds/red/blink
-    chown system system /sys/class/leds/green/brightness
-    chown system system /sys/class/leds/blue/brightness
-    chown system system /sys/class/leds/white/brightness
-    chown system system /sys/class/leds/white/blink
-    chown system system /sys/class/leds/rgb/control
-    chown system system /sys/class/leds/led:flash_0/brightness
-    chown system system /sys/class/leds/charging/brightness
+    # chown system system /sys/class/leds/red/brightness
+    # chown system system /sys/class/leds/red/blink
+    # chown system system /sys/class/leds/green/brightness
+    # chown system system /sys/class/leds/blue/brightness
+    # chown system system /sys/class/leds/white/brightness
+    # chown system system /sys/class/leds/white/blink
+    # chown system system /sys/class/leds/rgb/control
+    # chown system system /sys/class/leds/led:flash_0/brightness
+    # chown system system /sys/class/leds/charging/brightness
     chmod 0664 /sys/class/leds/red/brightness
     chmod 0664 /sys/class/leds/red/blink
     chmod 0664 /sys/class/leds/green/brightness
@@ -405,7 +405,7 @@ on boot
     # chmod 0660 /sys/devices/virtual/timed_output/vibrator/vtg_level
 
     # High brightness mode
-    chown system system /sys/devices/virtual/graphics/fb0/hbm
+    # chown system system /sys/devices/virtual/graphics/fb0/hbm
     chmod 0660 /sys/devices/virtual/graphics/fb0/hbm
 
     # setup trace dir
