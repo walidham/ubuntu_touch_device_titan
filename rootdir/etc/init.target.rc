@@ -26,16 +26,38 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+on property:sys.usb.config=mtp
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/bDeviceClass 0
+    write /sys/class/android_usb/android0/bDeviceSubClass 0
+    write /sys/class/android_usb/android0/bDeviceProtocol 0
+    write /sys/class/android_usb/android0/idVendor 0x22b8
+    write /sys/class/android_usb/android0/idProduct 0x2e82
+    write /sys/class/android_usb/android0/functions mtp
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/bDeviceClass 0
+    write /sys/class/android_usb/android0/bDeviceSubClass 0
+    write /sys/class/android_usb/android0/bDeviceProtocol 0
+    write /sys/class/android_usb/android0/idVendor 0x22b8
+    write /sys/class/android_usb/android0/idProduct 0x2e76
+    write /sys/class/android_usb/android0/functions mtp,adb
+    write /sys/class/android_usb/android0/enable 1
+    setprop sys.usb.state ${sys.usb.config}
+
 on init
     # External storage directories
-    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-    mkdir /storage/sdcard1 0700 root root
+    # mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    # mkdir /storage/sdcard1 0700 root root
 
-    export SECONDARY_STORAGE /storage/sdcard1
+    # export SECONDARY_STORAGE /storage/sdcard1
 
     # Support legacy paths
-    symlink /storage/sdcard1 /mnt/sdcard1
-    symlink /storage/sdcard1 /external_sd
+    # symlink /storage/sdcard1 /mnt/sdcard1
+    # symlink /storage/sdcard1 /external_sd
 
 on post-fs-data
     # Create directory for titan sensors

@@ -46,16 +46,15 @@ on early-init
 on init
     # Set permissions for persist partition
     mkdir /persist 0771 system system
-
-    # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage/emulated 0555 root root
-
-    #External storage directories
-    mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
-    mkdir /storage/usbdisk 0700 root root
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /storage/sdcard1 0700 root root
+    mkdir /mnt/media_rw/usbotg 0700 media_rw media_rw
+    mkdir /storage/usbotg 0700 root root
 
     export EXTERNAL_STORAGE /storage/emulated/legacy
+    export SECONDARY_STORAGE /storage/sdcard1
     export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
     export EMULATED_STORAGE_TARGET /storage/emulated
 
@@ -64,16 +63,34 @@ on init
     symlink /storage/emulated/legacy /mnt/sdcard
     symlink /storage/emulated/legacy /storage/sdcard0
     symlink /mnt/shell/emulated/0 /storage/emulated/legacy
-    symlink /storage/usbdisk /usbdisk
-    symlink /storage/usbdisk /mnt/usbdisk
+
+    # See storage config details at http://source.android.com/tech/storage/
+    # mkdir /mnt/shell/emulated 0700 shell shell
+    # mkdir /storage/emulated 0555 root root
+
+    #External storage directories
+    # mkdir /mnt/media_rw/usbdisk 0700 media_rw media_rw
+    # mkdir /storage/usbdisk 0700 root root
+
+    # export EXTERNAL_STORAGE /storage/emulated/legacy
+    # export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
+    # export EMULATED_STORAGE_TARGET /storage/emulated
+
+    # Support legacy paths
+    # symlink /storage/emulated/legacy /sdcard
+    # symlink /storage/emulated/legacy /mnt/sdcard
+    # symlink /storage/emulated/legacy /storage/sdcard0
+    # symlink /mnt/shell/emulated/0 /storage/emulated/legacy
+    # symlink /storage/usbdisk /usbdisk
+    # symlink /storage/usbdisk /mnt/usbdisk
 
     # Configure coredump
-    write /proc/sys/kernel/core_pattern "|/system/bin/coredump %e %p %t"
-    write /proc/self/coredump_filter "0x7f"
+    # write /proc/sys/kernel/core_pattern "|/system/bin/coredump %e %p %t"
+    # write /proc/self/coredump_filter "0x7f"
 
     # Setup kernel dropbox permissions so that dropboxd can utilize it
-    chown root diag /sys/kernel/dropbox/event
-    chown root diag /sys/kernel/dropbox/data
+    # chown root diag /sys/kernel/dropbox/event
+    # chown root diag /sys/kernel/dropbox/data
 
 on fs
     mount_all fstab.qcom
@@ -367,16 +384,16 @@ on boot
     # chown system system /sys/class/leds/rgb/control
     # chown system system /sys/class/leds/led:flash_0/brightness
     # chown system system /sys/class/leds/charging/brightness
-    chmod 0664 /sys/class/leds/red/brightness
-    chmod 0664 /sys/class/leds/red/blink
-    chmod 0664 /sys/class/leds/green/brightness
-    chmod 0664 /sys/class/leds/blue/brightness
-    chmod 0664 /sys/class/leds/white/brightness
-    chmod 0664 /sys/class/leds/white/blink
-    chmod 0664 /sys/class/leds/rgb/control
-    chmod 0664 /sys/class/leds/led:flash_0/brightness
-    chmod 0664 /sys/class/leds/charging/brightness
-    chmod 0664 /sys/class/leds/lcd-backlight/brightness
+    chmod 0666 /sys/class/leds/red/brightness
+    chmod 0666 /sys/class/leds/red/blink
+    chmod 0666 /sys/class/leds/green/brightness
+    chmod 0666 /sys/class/leds/blue/brightness
+    chmod 0666 /sys/class/leds/white/brightness
+    chmod 0666 /sys/class/leds/white/blink
+    chmod 0666 /sys/class/leds/rgb/control
+    chmod 0666 /sys/class/leds/led:flash_0/brightness
+    chmod 0666 /sys/class/leds/charging/brightness
+    chmod 0666 /sys/class/leds/lcd-backlight/brightness
 
     # Change permission for backlight and lcd
     chmod 0666 /sys/class/leds/lcd-backlight/brightness
@@ -430,37 +447,52 @@ on boot
 
     # Switch to interactive and let PowerHAL configure it
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/sync_freq
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/sync_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
-    chmod 0644 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/boost
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/boostpulse
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/sampling_down_factor
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/sync_freq
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/sync_freq
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/target_loads
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_freq
+
+    # chown system system /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
+    chmod 0666 /sys/devices/system/cpu/cpufreq/interactive/up_threshold_any_cpu_load
+
+    # chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
     chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 
 # Services start here
