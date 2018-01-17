@@ -43,12 +43,12 @@ TARGET_NO_BOOTLOADER := true
 # Kernel
 BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
 TARGET_KERNEL_CONFIG := titan_ubuntu_defconfig
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags audit=0 selinux=0
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 vmalloc=400M utags.blkdev=/dev/block/platform/msm_sdcc.1/by-name/utags androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
-TARGET_KERNEL_SOURCE := kernel/motorola/kernel_msm8226
+TARGET_KERNEL_SOURCE := kernel/motorola/kernel_thea_msm8226
 
 
 # Vendor Unification Init
@@ -98,7 +98,7 @@ BOARD_HARDWARE_CLASS := $(DEVICE_PATH)/cmhw/
 TARGET_USES_QCOM_BSP := true
 
 # Display
-#BOARD_EGL_CFG := $(DEVICE_PATH)/egl.cfg
+BOARD_EGL_CFG := $(DEVICE_PATH)/egl.cfg
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true

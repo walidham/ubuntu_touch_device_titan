@@ -167,15 +167,6 @@
 /dev/dvb/adapter0/dvr*    0664   media       media
 /dev/dvb/adapter0/video*  0664   media       media
 
-# Block devices
-/dev/block/platform/msm_sdcc.1/by-name/hob          0660 root radio
-/dev/block/platform/msm_sdcc.1/by-name/dhob         0660 root radio
-/dev/block/platform/msm_sdcc.1/by-name/clogo        0660 root radio
-/dev/block/platform/msm_sdcc.1/by-name/cid          0660 root mot_dbvc
-/dev/block/platform/msm_sdcc.1/by-name/logs         0640 root system
-/dev/block/platform/msm_sdcc.1/by-name/utags        0660 mot_tcmd system
-/dev/block/platform/msm_sdcc.1/by-name/utagsBackup  0660 mot_tcmd system
-
 # Broadcast devices
 /dev/tsc_mux0             0660   media       media
 /dev/tsc_ci0              0660   media       media
@@ -209,60 +200,3 @@
 /dev/uio1                 0660   system     system
 /dev/uio2                 0660   system     system
 
-# SSR
-/dev/coredump_modem       0660   radio      radio
-/dev/ramdump_adsp         0660   radio      radio
-/dev/ramdump_modem        0660   radio      radio
-/dev/ramdump_smem-modem   0660   radio      radio
-/dev/ramdump_smem-smd     0660   radio      radio
-/dev/ramdump_venus        0660   radio      radio
-/dev/ramdump_pronto       0660   radio      radio
-
-# HOB
-/dev/mot_hob_ram          0660   radio      radio
-
-# ACDB
-/dev/msm_acdb             0660   system     audio
-
-# MOT CAMERA
-/dev/motcamera0           0660   camera     camera
-
-# I2C
-/dev/i2c-0                0660   root       system
-/dev/i2c-1                0660   root       system
-/dev/i2c-2                0660   root       system
-/dev/i2c-3                0660   root       system
-/dev/i2c-5                0660   root       system
-
-# SECURITY
-/dev/sec                  0660   system     drmrpc
-
-# AK8963 Magnetometer
-/dev/akm8963              0660   compass    compass
-/dev/akm8963_dev          0660   compass    compass
-
-# LIS3DH accelerometer
-/dev/lis3dh               0660   compass    compass
-
-# L3G4200D Gyro
-/dev/l3g4200d             0660   compass    compass
-
-# kernel logs
-/dev/log/kernel           0600   root       log
-
-# Moto Sensors
-/dev/stm401               0660  system     compass
-/dev/stm401_as            0660  compass    compass
-/dev/stm401_ms            0660  compass    compass
-
-# Validity Sensor
-/dev/vfsspi               0660  fingerp    fingerp
-
-# DTV
-/dev/isdbt                0660  system     system
-
-# haptic
-/dev/drv2605              0660  system     system
-
-# From moto ueventd.rc
-/dev/assd                 0660   smartcard  smartcard

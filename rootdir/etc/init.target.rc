@@ -26,54 +26,51 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-on property:sys.usb.config=mtp
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/bDeviceClass 0
-    write /sys/class/android_usb/android0/bDeviceSubClass 0
-    write /sys/class/android_usb/android0/bDeviceProtocol 0
-    write /sys/class/android_usb/android0/idVendor 0x22b8
-    write /sys/class/android_usb/android0/idProduct 0x2e82
-    write /sys/class/android_usb/android0/functions mtp
-    write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state ${sys.usb.config}
-
-on property:sys.usb.config=mtp,adb
-    write /sys/class/android_usb/android0/enable 0
-    write /sys/class/android_usb/android0/bDeviceClass 0
-    write /sys/class/android_usb/android0/bDeviceSubClass 0
-    write /sys/class/android_usb/android0/bDeviceProtocol 0
-    write /sys/class/android_usb/android0/idVendor 0x22b8
-    write /sys/class/android_usb/android0/idProduct 0x2e76
-    write /sys/class/android_usb/android0/functions mtp,adb
-    write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state ${sys.usb.config}
-
 on init
     # External storage directories
-    # mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-    # mkdir /storage/sdcard1 0700 root root
+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
+    mkdir /storage/sdcard1 0700 root root
 
-    # export SECONDARY_STORAGE /storage/sdcard1
+    export SECONDARY_STORAGE /storage/sdcard1
 
     # Support legacy paths
-    # symlink /storage/sdcard1 /mnt/sdcard1
-    # symlink /storage/sdcard1 /external_sd
+    symlink /storage/sdcard1 /mnt/sdcard1
+    symlink /storage/sdcard1 /external_sd
+    
+    write /sys/class/android_usb/android0/f_rndis/wceis 1
+
+    # in ubuntu, default to mtp,adb mode for usb
+    setprop persist.sys.usb.config mtp,adb
+    setprop sys.usb.config mtp,adb
 
 on post-fs-data
     # Create directory for titan sensors
     mkdir /data/misc/sensor 0775
     exec /system/bin/chown -R input:input /data/misc/sensor
-
+    
 on boot
     # titan/thea  sensors
     chown root input /sys/class/sig_sensor/g_sensor/en_sig_motion
     chown root input /sys/class/srot_sensor/g_sensor/en_disp_rotation
 
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    write /sys/class/android_usb/android0/f_mass_storage/vendor ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/f_mass_storage/product ${ro.product.model}
+    mkdir /dev/bus 0755 root root
+    mkdir /dev/bus/usb 0755 root root
+    chown system system /sys/class/android_usb/android0/secure
+    chmod 0666 /sys/class/android_usb/android0/secure
+
 # Services start here
 
-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
+#start camera server as daemon
+service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
-    disabled
+    user camera
+    group camera system inet input graphics
+
 
 service sensord /system/bin/sensord
     user input
